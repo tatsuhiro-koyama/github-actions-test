@@ -6,21 +6,30 @@ on:
   workflow_dispatch:
 
 jobs:
-  create-pr-module-upgrade:
+  create-pr:
+    name: Create Pull Request
     runs-on: ubuntu-22.04
     timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout Default Branch
+        uses: actions/checkout@v4
+      - name: Set up Pull Request Variables
+        id: pr_val
+        run: |
+          TIMESTAMP=$(date '+%Y%m%d')
+          echo "TIMESTAMP=$TIMESTAMP" >> $GITHUB_OUTPUT
+          echo "JOB_URL=$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID" >> $GITHUB_OUTPUT
+          echo "TOPIC_BRANCH=topic-module-upgrade-$TIMESTAMP" >> $GITHUB_OUTPUT
       - name: Create Commits
         run: |
-          git config user.name tatsuhiro_koyama
-          git config user.email tatsuhiro_koyama@dwango.co.jp
-          git commit --allow-empty -m "テスト PR 作成"
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git commit --allow-empty -m "【${{ steps.pr_val.outputs.TIMESTAMP }}】 テスト PR 作成"
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v5
         with:
-          title: 'テスト PR 作成'
-          branch: 'topic-module-update-test'
+          title: '【${{ steps.pr_val.outputs.TIMESTAMP }}】 テスト PR 作成'
+          branch: '${{ steps.pr_val.outputs.TOPIC_BRANCH }}'
           draft: false
           base: develop
           delete-branch: true
@@ -28,3 +37,10 @@ jobs:
             ## 関連 URL
 
             - 省略
+  # refs/heads/{BRANCH_NAME}
+  call-workflow:
+    needs: ['create-pr']
+    uses: ./.github/workflows/ci-job.yml
+    with:
+      checkout-ref: 'refs/heads/${{ steps.pr_val.outputs.TOPIC_BRANCH }}'
+
