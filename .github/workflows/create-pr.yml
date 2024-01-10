@@ -10,6 +10,8 @@ jobs:
     name: Create Pull Request
     runs-on: ubuntu-22.04
     timeout-minutes: 10
+    outputs:
+      value: ${{ steps.pr_val.outputs.value }}
     steps:
       - name: Checkout Default Branch
         uses: actions/checkout@v4
@@ -42,5 +44,5 @@ jobs:
     needs: ['create-pr']
     uses: ./.github/workflows/ci-job.yml
     with:
-      checkout-ref: 'refs/heads/${{ steps.pr_val.outputs.TOPIC_BRANCH }}'
+      checkout-ref: 'refs/heads/${{ needs.create-pr.outputs.TOPIC_BRANCH }}'
 
