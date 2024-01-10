@@ -1,0 +1,30 @@
+name: Create PR
+
+on:
+  schedule:
+    - cron: '0 0 25 * *'
+  workflow_dispatch:
+
+jobs:
+  create-pr-module-upgrade:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v3
+      - name: Create Commits
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git commit --allow-empty -m "テスト PR 作成"
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v5
+        with:
+          title: 'テスト PR 作成'
+          branch: 'topic-module-update-test'
+          draft: false
+          base: develop
+          delete-branch: true
+          body: |
+            ## 関連 URL
+
+            - 省略
