@@ -13,8 +13,8 @@ jobs:
       - uses: actions/checkout@v3
       - name: Create Commits
         run: |
-          git config user.name github-actions
-          git config user.email github-actions@github.com
+          git config user.name tatsuhiro_koyama
+          git config user.email tatsuhiro_koyama@dwango.co.jp
           git commit --allow-empty -m "テスト PR 作成"
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v5
