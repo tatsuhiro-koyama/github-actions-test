@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-22.04
     timeout-minutes: 10
     outputs:
-      value: ${{ steps.pr_val.outputs.value }}
+      TOPIC_BRANCH: ${{ steps.pr_val.outputs.TOPIC_BRANCH }}
     steps:
       - name: Checkout Default Branch
         uses: actions/checkout@v4
