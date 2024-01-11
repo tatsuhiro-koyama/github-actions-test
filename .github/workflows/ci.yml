@@ -11,7 +11,7 @@ on:
   workflow_run:
     workflows: ['Create PR']
     types: [completed]
-    branches: ['topic-module-upgrade-*']
+    # branches: ['topic-module-upgrade-*']
 
 jobs:
   call-workflow:
