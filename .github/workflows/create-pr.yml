@@ -39,6 +39,7 @@ jobs:
         id: cpr
         uses: peter-evans/create-pull-request@v5
         with:
+          token: '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'
           title: '【${{ steps.pr_val.outputs.TIMESTAMP }}】 テスト PR 作成'
           branch: '${{ steps.pr_val.outputs.TOPIC_BRANCH }}'
           draft: false
@@ -55,14 +56,14 @@ jobs:
           echo "Pull Request URL - ${{ steps.cpr.outputs.pull-request-url }}"
   # refs/heads/{BRANCH_NAME}
   # refs/pulls/{PULL_REQUESTNUMBER}/merge
-  call-workflow:
-    needs: ['create-pr']
-    uses: ./.github/workflows/ci-job.yml
-    with:
-      # checkout-ref: 'refs/heads/${{ needs.create-pr.outputs.TOPIC_BRANCH }}'
-      # checkout-ref: 'refs/pull/${{ needs.create-pr.outputs.PR_NUMBER }}/merge'
-      # checkout-ref: '${{ needs.create-pr.outputs.PR_COMMIT_ID }}'
-      checkout-ref: '${{ needs.create-pr.outputs.PR_HEAD_SHA }}'
+  # call-workflow:
+  #   needs: ['create-pr']
+  #   uses: ./.github/workflows/ci-job.yml
+  #   with:
+  #     # checkout-ref: 'refs/heads/${{ needs.create-pr.outputs.TOPIC_BRANCH }}'
+  #     # checkout-ref: 'refs/pull/${{ needs.create-pr.outputs.PR_NUMBER }}/merge'
+  #     # checkout-ref: '${{ needs.create-pr.outputs.PR_COMMIT_ID }}'
+  #     checkout-ref: '${{ needs.create-pr.outputs.PR_HEAD_SHA }}'
   # run-workflow:
   #   needs: ['create-pr']
   #   name: Run Workflow
