@@ -68,4 +68,4 @@ jobs:
         uses: actions/checkout@v4
       - name: Run Workflow
         run: |
-          gh workflow run 'CI' --ref 'refs/pull/${{ needs.create-pr.outputs.PR_NUMBER }}/merge'
+          gh workflow run 'CI' --ref 'refs/heads/${{ needs.create-pr.outputs.TOPIC_BRANCH }}'
