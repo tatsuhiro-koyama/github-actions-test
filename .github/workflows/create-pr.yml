@@ -14,6 +14,7 @@ jobs:
       TOPIC_BRANCH: ${{ steps.pr_val.outputs.TOPIC_BRANCH }}
       PR_NUMBER: ${{ steps.cpr.outputs.pull-request-number }}
       PR_COMMIT_ID: ${{ steps.pr_commits.outputs.PR_COMMIT_ID }}
+      PR_HEAD_SHA: ${{ steps.cpr.outputs.pull-request-head-sha }}
     steps:
       - name: Checkout Default Branch
         uses: actions/checkout@v4
@@ -54,29 +55,30 @@ jobs:
           echo "Pull Request URL - ${{ steps.cpr.outputs.pull-request-url }}"
   # refs/heads/{BRANCH_NAME}
   # refs/pulls/{PULL_REQUESTNUMBER}/merge
-  # call-workflow:
-  #   needs: ['create-pr']
-  #   uses: ./.github/workflows/ci-job.yml
-  #   with:
-  #     # checkout-ref: 'refs/heads/${{ needs.create-pr.outputs.TOPIC_BRANCH }}'
-  #     # checkout-ref: 'refs/pull/${{ needs.create-pr.outputs.PR_NUMBER }}/merge'
-  #     checkout-ref: '${{ needs.create-pr.outputs.PR_COMMIT_ID }}'
-  run-workflow:
+  call-workflow:
     needs: ['create-pr']
-    name: Run Workflow
-    runs-on: ubuntu-22.04
-    timeout-minutes: 10
-    env:
-      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    steps:
-      # - name: Sleep for  minutes
-      #   run: sleep 60s
-      #   shell: bash
-      - name: Checkout Default Branch
-        uses: actions/checkout@v4
-      # - name: Run Workflow
-      #   run: |
-      #     gh workflow run 'CI' --ref 'refs/pull/${{ needs.create-pr.outputs.PR_NUMBER }}/merge'
-      - name: Update Ready for Review
-        run: |
-          gh pr ready ${{ needs.create-pr.outputs.PR_NUMBER }}
+    uses: ./.github/workflows/ci-job.yml
+    with:
+      # checkout-ref: 'refs/heads/${{ needs.create-pr.outputs.TOPIC_BRANCH }}'
+      # checkout-ref: 'refs/pull/${{ needs.create-pr.outputs.PR_NUMBER }}/merge'
+      # checkout-ref: '${{ needs.create-pr.outputs.PR_COMMIT_ID }}'
+      checkout-ref: '${{ needs.create-pr.outputs.PR_HEAD_SHA }}'
+  # run-workflow:
+  #   needs: ['create-pr']
+  #   name: Run Workflow
+  #   runs-on: ubuntu-22.04
+  #   timeout-minutes: 10
+  #   env:
+  #     GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #   steps:
+  #     # - name: Sleep for  minutes
+  #     #   run: sleep 60s
+  #     #   shell: bash
+  #     - name: Checkout Default Branch
+  #       uses: actions/checkout@v4
+  #     # - name: Run Workflow
+  #     #   run: |
+  #     #     gh workflow run 'CI' --ref 'refs/pull/${{ needs.create-pr.outputs.PR_NUMBER }}/merge'
+  #     - name: Update Ready for Review
+  #       run: |
+  #         gh pr ready ${{ needs.create-pr.outputs.PR_NUMBER }}
