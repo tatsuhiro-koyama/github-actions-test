@@ -4,8 +4,6 @@ on:
   schedule:
     - cron: '0 0 25 * *'
   workflow_dispatch:
-env:
-  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
   create-pr:
@@ -15,6 +13,7 @@ jobs:
     outputs:
       TOPIC_BRANCH: ${{ steps.pr_val.outputs.TOPIC_BRANCH }}
       PR_NUMBER: ${{ steps.cpr.outputs.pull-request-number }}
+      PR_COMMIT_ID: ${{ steps.pr_commits.outputs.PR_COMMIT_ID }}
     steps:
       - name: Checkout Default Branch
         uses: actions/checkout@v4
@@ -26,12 +25,15 @@ jobs:
           echo "JOB_URL=$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID" >> $GITHUB_OUTPUT
           echo "TOPIC_BRANCH=topic-module-upgrade-$TIMESTAMP" >> $GITHUB_OUTPUT
       - name: Create Commits
+        id: pr_commits
         run: |
           git config user.name github-actions
           git config user.email github-actions@github.com
           echo "${{ steps.pr_val.outputs.TIMESTAMP }}" > ./update.txt
           git add ./update.txt
-          git commit --allow-empty -m "【${{ steps.pr_val.outputs.TIMESTAMP }}】 テスト PR 作成"
+          git commit -m "【${{ steps.pr_val.outputs.TIMESTAMP }}】 テスト PR 作成"
+          PR_COMMIT_ID=$(git rev-parse HEAD)
+          echo "PR_COMMIT_ID=$PR_COMMIT_ID" >> $GITHUB_OUTPUT
       - name: Create Pull Request
         id: cpr
         uses: peter-evans/create-pull-request@v5
@@ -52,12 +54,13 @@ jobs:
           echo "Pull Request URL - ${{ steps.cpr.outputs.pull-request-url }}"
   # refs/heads/{BRANCH_NAME}
   # refs/pulls/{PULL_REQUESTNUMBER}/merge
-  # call-workflow:
-  #   needs: ['create-pr']
-  #   uses: ./.github/workflows/ci-job.yml
-  #   with:
-  #     # checkout-ref: 'refs/heads/${{ needs.create-pr.outputs.TOPIC_BRANCH }}'
-  #     checkout-ref: 'refs/pull/${{ needs.create-pr.outputs.PR_NUMBER }}/merge'
+  call-workflow:
+    needs: ['create-pr']
+    uses: ./.github/workflows/ci-job.yml
+    with:
+      # checkout-ref: 'refs/heads/${{ needs.create-pr.outputs.TOPIC_BRANCH }}'
+      # checkout-ref: 'refs/pull/${{ needs.create-pr.outputs.PR_NUMBER }}/merge'
+      checkout-ref: '${{ needs.create-pr.outputs.PR_COMMIT_ID }}'
   # run-workflow:
   #   needs: ['create-pr']
   #   name: Run Workflow
