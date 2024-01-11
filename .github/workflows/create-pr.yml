@@ -61,6 +61,8 @@ jobs:
     name: Run Workflow
     runs-on: ubuntu-22.04
     timeout-minutes: 10
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - name: Run Workflow
         run: |
