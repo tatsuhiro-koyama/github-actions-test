@@ -39,7 +39,7 @@ jobs:
         id: cpr
         uses: peter-evans/create-pull-request@v5
         with:
-          token: '${{ secret.PERSONAL_TOKEN }}'
+          token: '${{ secrets.PERSONAL_TOKEN }}'
           title: '【${{ steps.pr_val.outputs.TIMESTAMP }}】 テスト PR 作成'
           branch: '${{ steps.pr_val.outputs.TOPIC_BRANCH }}'
           draft: false
