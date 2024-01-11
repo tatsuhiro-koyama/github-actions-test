@@ -6,7 +6,7 @@ on:
   #   branches: ['master', 'develop', 'release*']
   pull_request:
     types: ['opened']
-    branches: ['topic-module-upgrade-*']
+    # branches: ['topic-module-upgrade-*']
     # paths: 'topic-module-upgrade-*'
   # workflow_run:
   #   workflows: ["Create PR"]
