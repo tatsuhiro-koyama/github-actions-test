@@ -28,6 +28,8 @@ jobs:
       - name: Create Commits
         id: pr_commits
         run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
           echo "${{ steps.pr_val.outputs.TIMESTAMP }}" > ./update.txt
           git add ./update.txt
           git commit -m "【${{ steps.pr_val.outputs.TIMESTAMP }}】 テスト PR 作成"
@@ -37,10 +39,9 @@ jobs:
         id: cpr
         uses: peter-evans/create-pull-request@v5
         with:
-          token: '${{ secrets.PERSONAL_TOKEN }}'
           title: '【${{ steps.pr_val.outputs.TIMESTAMP }}】 テスト PR 作成'
           branch: '${{ steps.pr_val.outputs.TOPIC_BRANCH }}'
-          draft: false
+          draft: true
           base: develop
           delete-branch: true
           body: |
@@ -62,22 +63,22 @@ jobs:
   #     # checkout-ref: 'refs/pull/${{ needs.create-pr.outputs.PR_NUMBER }}/merge'
   #     # checkout-ref: '${{ needs.create-pr.outputs.PR_COMMIT_ID }}'
   #     checkout-ref: '${{ needs.create-pr.outputs.PR_HEAD_SHA }}'
-  # run-workflow:
-  #   needs: ['create-pr']
-  #   name: Run Workflow
-  #   runs-on: ubuntu-22.04
-  #   timeout-minutes: 10
-  #   env:
-  #     GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  #   steps:
-  #     # - name: Sleep for  minutes
-  #     #   run: sleep 60s
-  #     #   shell: bash
-  #     - name: Checkout Default Branch
-  #       uses: actions/checkout@v4
-  #     # - name: Run Workflow
-  #     #   run: |
-  #     #     gh workflow run 'CI' --ref 'refs/pull/${{ needs.create-pr.outputs.PR_NUMBER }}/merge'
-  #     - name: Update Ready for Review
-  #       run: |
-  #         gh pr ready ${{ needs.create-pr.outputs.PR_NUMBER }}
+  run-workflow:
+    needs: ['create-pr']
+    name: Run Workflow
+    runs-on: ubuntu-22.04
+    timeout-minutes: 10
+    env:
+      GH_TOKEN: ${{ secrets.PERSONAL_TOKEN }}
+    steps:
+      # - name: Sleep for  minutes
+      #   run: sleep 60s
+      #   shell: bash
+      - name: Checkout Default Branch
+        uses: actions/checkout@v4
+      # - name: Run Workflow
+      #   run: |
+      #     gh workflow run 'CI' --ref 'refs/pull/${{ needs.create-pr.outputs.PR_NUMBER }}/merge'
+      - name: Update Ready for Review
+        run: |
+          gh pr ready ${{ needs.create-pr.outputs.PR_NUMBER }}
