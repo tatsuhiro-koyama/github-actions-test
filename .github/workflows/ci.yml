@@ -5,9 +5,9 @@ on:
   # push:
   #   branches: ['master', 'develop', 'release*']
   pull_request:
-    # types: ['opened']
+    types: ['opened', 'review_requested']
     # branches: ['topic-module-upgrade-*']
-    paths: ['./update.txt']
+    # paths: ['./update.txt']
   # workflow_run:
   #   workflows: ["Create PR"]
   #   types: [completed]
