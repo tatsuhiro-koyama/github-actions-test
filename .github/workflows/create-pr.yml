@@ -28,8 +28,6 @@ jobs:
       - name: Create Commits
         id: pr_commits
         run: |
-          git config user.name github-actions
-          git config user.email github-actions@github.com
           echo "${{ steps.pr_val.outputs.TIMESTAMP }}" > ./update.txt
           git add ./update.txt
           git commit -m "【${{ steps.pr_val.outputs.TIMESTAMP }}】 テスト PR 作成"
