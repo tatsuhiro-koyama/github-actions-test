@@ -18,7 +18,7 @@ jobs:
       - name: Set up Pull Request Variables
         id: pr_val
         run: |
-          TIMESTAMP=$(date '+%Y%m%d')
+          TIMESTAMP=$(date '+%Y%m%d%H%M%S')
           echo "TIMESTAMP=$TIMESTAMP" >> $GITHUB_OUTPUT
           echo "JOB_URL=$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID" >> $GITHUB_OUTPUT
           echo "TOPIC_BRANCH=topic-module-upgrade-$TIMESTAMP" >> $GITHUB_OUTPUT
@@ -26,6 +26,8 @@ jobs:
         run: |
           git config user.name github-actions
           git config user.email github-actions@github.com
+          cat > ./update.txt
+          git add ./update.txt
           git commit --allow-empty -m "【${{ steps.pr_val.outputs.TIMESTAMP }}】 テスト PR 作成"
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v5
