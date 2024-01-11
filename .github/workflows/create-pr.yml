@@ -36,7 +36,7 @@ jobs:
         with:
           title: '【${{ steps.pr_val.outputs.TIMESTAMP }}】 テスト PR 作成'
           branch: '${{ steps.pr_val.outputs.TOPIC_BRANCH }}'
-          draft: false
+          draft: true
           base: develop
           delete-branch: true
           body: |
@@ -48,10 +48,10 @@ jobs:
         run: |
           echo "Pull Request Number - ${{ steps.cpr.outputs.pull-request-number }}"
           echo "Pull Request URL - ${{ steps.cpr.outputs.pull-request-url }}"
-  # refs/heads/{BRANCH_NAME}
-  call-workflow:
-    needs: ['create-pr']
-    uses: ./.github/workflows/ci-job.yml
-    with:
-      # checkout-ref: 'refs/heads/${{ needs.create-pr.outputs.TOPIC_BRANCH }}'
-      checkout-ref: 'refs/pull/${{ needs.create-pr.outputs.PR_NUMBER }}/merge'
+  # # refs/heads/{BRANCH_NAME}
+  # call-workflow:
+  #   needs: ['create-pr']
+  #   uses: ./.github/workflows/ci-job.yml
+  #   with:
+  #     # checkout-ref: 'refs/heads/${{ needs.create-pr.outputs.TOPIC_BRANCH }}'
+  #     checkout-ref: 'refs/pull/${{ needs.create-pr.outputs.PR_NUMBER }}/merge'
