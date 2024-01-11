@@ -33,7 +33,8 @@ jobs:
           git checkout '${{ steps.pr_val.outputs.TOPIC_BRANCH }}'
           echo "${{ steps.pr_val.outputs.TIMESTAMP }}" > ./update.txt
           git add ./update.txt
-          git commit --allow-empty -m "【${{ steps.pr_val.outputs.TIMESTAMP }}】 テスト PR 作成"
+          git commit -m "【${{ steps.pr_val.outputs.TIMESTAMP }}】 テスト PR 作成"
+          git push origin '${{ steps.pr_val.outputs.TOPIC_BRANCH }}'
       - name: Create Pull Reqest 2
         id: cpr2
         run: |
