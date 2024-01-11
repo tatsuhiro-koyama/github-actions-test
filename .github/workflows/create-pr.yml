@@ -41,7 +41,7 @@ jobs:
         with:
           title: '【${{ steps.pr_val.outputs.TIMESTAMP }}】 テスト PR 作成'
           branch: '${{ steps.pr_val.outputs.TOPIC_BRANCH }}'
-          draft: true
+          draft: false
           base: develop
           delete-branch: true
           body: |
