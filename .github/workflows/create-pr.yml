@@ -49,26 +49,26 @@ jobs:
           echo "Pull Request Number - ${{ steps.cpr.outputs.pull-request-number }}"
           echo "Pull Request URL - ${{ steps.cpr.outputs.pull-request-url }}"
   # refs/heads/{BRANCH_NAME}
-  # refs/pull/{PULL_REQUESTNUMBER}/merge
-  # call-workflow:
-  #   needs: ['create-pr']
-  #   uses: ./.github/workflows/ci-job.yml
-  #   with:
-  #     # checkout-ref: 'refs/heads/${{ needs.create-pr.outputs.TOPIC_BRANCH }}'
-  #     checkout-ref: 'refs/pull/${{ needs.create-pr.outputs.PR_NUMBER }}/merge'
-  run-workflow:
+  # refs/pulls/{PULL_REQUESTNUMBER}/merge
+  call-workflow:
     needs: ['create-pr']
-    name: Run Workflow
-    runs-on: ubuntu-22.04
-    timeout-minutes: 10
-    env:
-      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    steps:
-      - name: Sleep for  minutes
-        run: sleep 60s
-        shell: bash
-      - name: Checkout Default Branch
-        uses: actions/checkout@v4
-      - name: Run Workflow
-        run: |
-          gh workflow run 'CI' --ref 'refs/pull/${{ needs.create-pr.outputs.PR_NUMBER }}/merge'
+    uses: ./.github/workflows/ci-job.yml
+    with:
+      # checkout-ref: 'refs/heads/${{ needs.create-pr.outputs.TOPIC_BRANCH }}'
+      checkout-ref: 'refs/pull/${{ needs.create-pr.outputs.PR_NUMBER }}/merge'
+  # run-workflow:
+  #   needs: ['create-pr']
+  #   name: Run Workflow
+  #   runs-on: ubuntu-22.04
+  #   timeout-minutes: 10
+  #   env:
+  #     GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #   steps:
+  #     - name: Sleep for  minutes
+  #       run: sleep 60s
+  #       shell: bash
+  #     - name: Checkout Default Branch
+  #       uses: actions/checkout@v4
+  #     - name: Run Workflow
+  #       run: |
+  #         gh workflow run 'CI' --ref 'refs/pull/${{ needs.create-pr.outputs.PR_NUMBER }}/merge'
