@@ -3,7 +3,7 @@ name: CI
 on:
   workflow_dispatch:
   push:
-    branches: ['master', 'develop', 'release*', 'topic-module-upgrade-*']
+    branches: ['master', 'develop', 'release**', 'topic-module-upgrade-**']
   pull_request:
     types: ['opened', 'synchronize', 'reopened', 'ready_for_review']
   # pull_request_target:
