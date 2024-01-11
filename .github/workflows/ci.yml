@@ -10,10 +10,10 @@ on:
     # paths: ['./update.txt']
   # pull_request_target:
     # types: ['opened', 'synchronize', 'reopened', 'ready_for_review']
-  workflow_run:
-    workflows: ["Create PR"]
-    types: [completed]
-    # branches: ['topic-module-update-*']
+  # workflow_run:
+  #   workflows: ["Create PR"]
+  #   types: [completed]
+  #   # branches: ['topic-module-update-*']
 
 jobs:
   call-ci-workflow:
