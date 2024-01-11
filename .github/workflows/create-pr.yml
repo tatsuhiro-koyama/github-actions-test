@@ -12,6 +12,7 @@ jobs:
     timeout-minutes: 10
     outputs:
       TOPIC_BRANCH: ${{ steps.pr_val.outputs.TOPIC_BRANCH }}
+      PR_NUMBER: ${{ steps.cpr.outputs.pull-request-number }}
     steps:
       - name: Checkout Default Branch
         uses: actions/checkout@v4
@@ -30,6 +31,7 @@ jobs:
           git add ./update.txt
           git commit --allow-empty -m "【${{ steps.pr_val.outputs.TIMESTAMP }}】 テスト PR 作成"
       - name: Create Pull Request
+        id: cpr
         uses: peter-evans/create-pull-request@v5
         with:
           title: '【${{ steps.pr_val.outputs.TIMESTAMP }}】 テスト PR 作成'
@@ -41,9 +43,15 @@ jobs:
             ## 関連 URL
 
             - 省略
+      - name: Check outputs
+        if: ${{ steps.cpr.outputs.pull-request-number }}
+        run: |
+          echo "Pull Request Number - ${{ steps.cpr.outputs.pull-request-number }}"
+          echo "Pull Request URL - ${{ steps.cpr.outputs.pull-request-url }}"
   # refs/heads/{BRANCH_NAME}
   call-workflow:
     needs: ['create-pr']
     uses: ./.github/workflows/ci-job.yml
     with:
-      checkout-ref: 'refs/heads/${{ needs.create-pr.outputs.TOPIC_BRANCH }}'
+      # checkout-ref: 'refs/heads/${{ needs.create-pr.outputs.TOPIC_BRANCH }}'
+      checkout-ref: 'refs/pull/${{ needs.create-pr.outputs.PR_NUMBER }}/merge'
