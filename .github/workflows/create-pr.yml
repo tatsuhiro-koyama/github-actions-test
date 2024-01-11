@@ -41,4 +41,9 @@ jobs:
             ## 関連 URL
 
             - 省略
-
+  # refs/heads/{BRANCH_NAME}
+  call-workflow:
+    needs: ['create-pr']
+    uses: ./.github/workflows/ci-job.yml
+    with:
+      checkout-ref: 'refs/heads/${{ needs.create-pr.outputs.TOPIC_BRANCH }}'
