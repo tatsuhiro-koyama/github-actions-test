@@ -48,10 +48,20 @@ jobs:
         run: |
           echo "Pull Request Number - ${{ steps.cpr.outputs.pull-request-number }}"
           echo "Pull Request URL - ${{ steps.cpr.outputs.pull-request-url }}"
-  # # refs/heads/{BRANCH_NAME}
+  # refs/heads/{BRANCH_NAME}
+  # refs/pull/{PULL_REQUESTNUMBER}/merge
   # call-workflow:
   #   needs: ['create-pr']
   #   uses: ./.github/workflows/ci-job.yml
   #   with:
   #     # checkout-ref: 'refs/heads/${{ needs.create-pr.outputs.TOPIC_BRANCH }}'
   #     checkout-ref: 'refs/pull/${{ needs.create-pr.outputs.PR_NUMBER }}/merge'
+  run-workflow:
+    needs: ['create-pr']
+    name: Run Workflow
+    runs-on: ubuntu-22.04
+    timeout-minutes: 10
+    steps:
+      - name: Run Workflow
+        run: |
+          gh workflow run 'CI' --ref 'refs/pull/${{ needs.create-pr.outputs.PR_NUMBER }}/merge'
