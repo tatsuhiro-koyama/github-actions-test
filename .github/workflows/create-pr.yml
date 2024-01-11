@@ -64,8 +64,11 @@ jobs:
     env:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
+      - name: Sleep for  minutes
+        run: sleep 60s
+        shell: bash
       - name: Checkout Default Branch
         uses: actions/checkout@v4
       - name: Run Workflow
         run: |
-          gh workflow run 'CI' --ref 'refs/heads/${{ needs.create-pr.outputs.TOPIC_BRANCH }}'
+          gh workflow run 'CI' --ref 'refs/pull/${{ needs.create-pr.outputs.PR_NUMBER }}'
