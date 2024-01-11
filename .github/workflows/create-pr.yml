@@ -4,6 +4,8 @@ on:
   schedule:
     - cron: '0 0 25 * *'
   workflow_dispatch:
+env:
+  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
   create-pr:
@@ -50,12 +52,12 @@ jobs:
           echo "Pull Request URL - ${{ steps.cpr.outputs.pull-request-url }}"
   # refs/heads/{BRANCH_NAME}
   # refs/pulls/{PULL_REQUESTNUMBER}/merge
-  call-workflow:
-    needs: ['create-pr']
-    uses: ./.github/workflows/ci-job.yml
-    with:
-      # checkout-ref: 'refs/heads/${{ needs.create-pr.outputs.TOPIC_BRANCH }}'
-      checkout-ref: 'refs/pull/${{ needs.create-pr.outputs.PR_NUMBER }}/merge'
+  # call-workflow:
+  #   needs: ['create-pr']
+  #   uses: ./.github/workflows/ci-job.yml
+  #   with:
+  #     # checkout-ref: 'refs/heads/${{ needs.create-pr.outputs.TOPIC_BRANCH }}'
+  #     checkout-ref: 'refs/pull/${{ needs.create-pr.outputs.PR_NUMBER }}/merge'
   # run-workflow:
   #   needs: ['create-pr']
   #   name: Run Workflow
