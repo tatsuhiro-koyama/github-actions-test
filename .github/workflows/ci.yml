@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   # push:
   #   branches: ['master', 'develop', 'release*']
-  pull_request:
+  pull_request_target:
     types: ['opened']
     # branches: ['topic-module-upgrade-*']
     # paths: 'topic-module-upgrade-*'
