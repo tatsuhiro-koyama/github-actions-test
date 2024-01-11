@@ -39,7 +39,7 @@ jobs:
         id: cpr
         uses: peter-evans/create-pull-request@v5
         with:
-          token: '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'
+          token: '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'
           title: '【${{ steps.pr_val.outputs.TIMESTAMP }}】 テスト PR 作成'
           branch: '${{ steps.pr_val.outputs.TOPIC_BRANCH }}'
           draft: false
