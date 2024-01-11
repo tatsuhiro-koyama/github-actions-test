@@ -18,5 +18,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: ${{ inputs.checkout-ref }}
-      # - name: Run Error
+      - name: Run Test Success
+        run: exit 0
+      # - name: Run Test Error
       #   run: exit 1
