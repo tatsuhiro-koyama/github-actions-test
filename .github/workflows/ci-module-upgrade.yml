@@ -1,0 +1,13 @@
+name: CI Module Upgrade
+
+on:
+  workflow_dispatch:
+  pull_request:
+    types: ['ready_for_review']
+    branches: ['topic-module-upgrade-*']
+
+jobs:
+  call-ci-workflow:
+    uses: ./.github/workflows/ci-job.yml
+    with:
+      checkout-ref: ${{ github.ref }}
