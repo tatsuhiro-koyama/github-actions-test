@@ -4,10 +4,10 @@ on:
   workflow_dispatch:
   # push:
   #   branches: ['master', 'develop', 'release*']
-  pull_request_target:
+  pull_request:
     # types: ['opened']
     # branches: ['topic-module-upgrade-*']
-    # paths: 'topic-module-upgrade-*'
+    paths: ['./update.txt']
   # workflow_run:
   #   workflows: ["Create PR"]
   #   types: [completed]
