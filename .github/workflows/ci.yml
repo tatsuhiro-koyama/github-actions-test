@@ -21,4 +21,5 @@ jobs:
   call-ci-workflow:
     uses: ./.github/workflows/ci-job.yml
     with:
-      checkout-ref: ${{ github.ref }}
+      # checkout-ref: ${{ github.ref }}
+      checkout-ref: ${{ github.event.client_payload.ref }}
