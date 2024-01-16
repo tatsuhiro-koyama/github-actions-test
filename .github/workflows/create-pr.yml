@@ -42,8 +42,8 @@ jobs:
           token: ${{ secrets.PERSONAL_TOKEN }}
           title: '【${{ steps.pr_val.outputs.TIMESTAMP }}】 テスト PR 作成'
           branch: '${{ steps.pr_val.outputs.TOPIC_BRANCH }}'
-          committer: GitHub <noreply@github.com>
-          author: GitHub23 <noreply@github.com>
+          committer: github-actions <github-actions@github.com>
+          author: github-actions <github-actions@github.com>
           draft: false
           base: develop
           delete-branch: true
