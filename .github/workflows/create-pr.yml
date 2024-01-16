@@ -40,10 +40,10 @@ jobs:
         uses: peter-evans/create-pull-request@v5
         with:
           token: ${{ secrets.PERSONAL_TOKEN }}
-          title: '${{ github.actor }} 【${{ steps.pr_val.outputs.TIMESTAMP }}】 テスト PR 作成'
+          title: '【${{ steps.pr_val.outputs.TIMESTAMP }}】 テスト PR 作成'
           branch: '${{ steps.pr_val.outputs.TOPIC_BRANCH }}'
-          committer: GitHub <noreply@github.com>
-          author: GitHub <noreply@github.com>
+          committer: github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>
+          author: github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>
           draft: false
           base: develop
           delete-branch: true
