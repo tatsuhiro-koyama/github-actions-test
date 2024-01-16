@@ -22,4 +22,4 @@ jobs:
     uses: ./.github/workflows/ci-job.yml
     with:
       # checkout-ref: ${{ github.ref }}
-      checkout-ref: ${{ github.event.client_payload.pull_request_number }}
+      checkout-ref: 'refs/pull/${{ github.event.client_payload.pull_request_number }}/merge'
