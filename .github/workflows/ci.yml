@@ -14,6 +14,8 @@ on:
   #   workflows: ["Create PR"]
   #   types: [completed]
   #   # branches: ['topic-module-update-*']
+  repository_dispatch:
+    types: [trigger-pull-request-ci]
 
 jobs:
   call-ci-workflow:
