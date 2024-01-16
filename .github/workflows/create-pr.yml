@@ -18,6 +18,11 @@ jobs:
     steps:
       - name: Checkout Default Branch
         uses: actions/checkout@v4
+      - uses: actions/create-github-app-token@v1
+        id: generate-token
+        with:
+          app_id: ${{ secrets.APP_ID }}
+          private_key: ${{ secrets.PRIVATE_KEY }}
       - name: Set up Pull Request Variables
         id: pr_val
         run: |
@@ -39,11 +44,12 @@ jobs:
         id: cpr
         uses: peter-evans/create-pull-request@v5
         with:
-          token: ${{ secrets.PERSONAL_TOKEN }}
+          # token: ${{ secrets.PERSONAL_TOKEN }}
+          token: ${{ steps.generate_token.outputs.token }}
           title: '【${{ steps.pr_val.outputs.TIMESTAMP }}】 テスト PR 作成'
           branch: '${{ steps.pr_val.outputs.TOPIC_BRANCH }}'
-          committer: github-actions <41898282+github-actions[bot]@users.noreply.github.com>
-          author: github-actions <41898282+github-actions[bot]@users.noreply.github.com>
+          # committer: github-actions <41898282+github-actions[bot]@users.noreply.github.com>
+          # author: github-actions <41898282+github-actions[bot]@users.noreply.github.com>
           draft: false
           base: develop
           delete-branch: true
