@@ -6,18 +6,13 @@ on:
     types: ['opened', 'synchronize', 'reopened', 'ready_for_review']
     # branches: ['topic-module-upgrade-*']
     # paths: ['./update.txt']
-  # pull_request_target:
-    # types: ['opened', 'synchronize', 'reopened', 'ready_for_review']
   # workflow_run:
   #   workflows: ["Create PR"]
   #   types: [completed]
   #   # branches: ['topic-module-update-*']
-  repository_dispatch:
-    types: [trigger-pull-request-ci]
 
 jobs:
   call-ci-workflow:
     uses: ./.github/workflows/ci-job.yml
     with:
-      # checkout-ref: ${{ github.ref }}
-      checkout-ref: 'refs/pull/${{ github.event.client_payload.pull_request_number }}/merge'
+      checkout-ref: ${{ github.ref }}
