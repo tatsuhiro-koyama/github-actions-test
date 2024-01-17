@@ -47,6 +47,6 @@ jobs:
       - name: Trigger Pull Request CI
         uses: peter-evans/repository-dispatch@v2
         with:
-          token: ${{ secrets.PERSONAL_TOKEN }}
+          # token: ${{ secrets.PERSONAL_TOKEN }}
           event-type: trigger-pull-request-ci
           client-payload: '{"pull_request_number": "${{ steps.cpr.outputs.pull-request-number }}"}'
