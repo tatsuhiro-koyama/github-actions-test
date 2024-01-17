@@ -41,7 +41,7 @@ jobs:
           branch: '${{ steps.pr_val.outputs.TOPIC_BRANCH }}'
           # committer: github-actions <41898282+github-actions[bot]@users.noreply.github.com>
           # author: github-actions <41898282+github-actions[bot]@users.noreply.github.com>
-          draft: false
+          draft: true
           base: develop
           delete-branch: true
           body: |
