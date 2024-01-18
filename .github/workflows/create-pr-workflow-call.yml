@@ -1,4 +1,4 @@
-name: Create PR Repository Dispatch
+name: Create PR Workflow call
 
 on:
   workflow_dispatch:
