@@ -1,0 +1,50 @@
+name: Create PR Repository Dispatch
+
+on:
+  workflow_dispatch:
+
+jobs:
+  create-pr:
+    name: Create Pull Request
+    runs-on: ubuntu-22.04
+    timeout-minutes: 10
+    outputs:
+      TOPIC_BRANCH: ${{ steps.pr_val.outputs.TOPIC_BRANCH }}
+      PR_NUMBER: ${{ steps.cpr.outputs.pull-request-number }}
+    steps:
+      - name: Checkout Default Branch
+        uses: actions/checkout@v4
+      - name: Set up Pull Request Variables
+        id: pr_val
+        run: |
+          TIMESTAMP=$(date '+%Y%m%d%H%M%S')
+          echo "TIMESTAMP=$TIMESTAMP" >> $GITHUB_OUTPUT
+          echo "JOB_URL=$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID" >> $GITHUB_OUTPUT
+          echo "TOPIC_BRANCH=topic-module-upgrade-$TIMESTAMP" >> $GITHUB_OUTPUT
+      - name: Create Commits
+        id: pr_commits
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          echo "${{ steps.pr_val.outputs.TIMESTAMP }}" > ./update.txt
+          git add ./update.txt
+          git commit -m "【${{ steps.pr_val.outputs.TIMESTAMP }}】 テスト PR 作成"
+          PR_COMMIT_ID=$(git rev-parse HEAD)
+          echo "PR_COMMIT_ID=$PR_COMMIT_ID" >> $GITHUB_OUTPUT
+      - name: Create Pull Request
+        id: cpr
+        uses: peter-evans/create-pull-request@v5
+        with:
+          title: '【${{ steps.pr_val.outputs.TIMESTAMP }}】 テスト PR 作成'
+          branch: '${{ steps.pr_val.outputs.TOPIC_BRANCH }}'
+          draft: false
+          base: develop
+          delete-branch: true
+          body: |
+            ## 関連 URL
+
+            - 省略
+      - name: Trigger Pull Request CI
+        uses: workflow_call
+        with:
+          ref: 'refs/pull/${{ steps.cpr.outputs.pull-request-number }}"}/merge'
